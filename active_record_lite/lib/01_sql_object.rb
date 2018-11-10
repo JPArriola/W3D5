@@ -18,12 +18,13 @@ class SQLObject
   end
 
   def self.finalize!
-    @columns.each do |column|
-      define_method(column) do
-        instance_variable_get("@#{column}")
+    self.columns.each do |name|
+      define_method(name) do
+        self.attributes[name]
       end
-      define_method("#{column}=") do |value|
-        instance_variable_set("@#{column}", value)
+
+      define_method("#{name}=") do |value|
+        self.attributes[name] = value
       end
     end
   end
